@@ -43,14 +43,14 @@ docker-compose up -d
 
 :warning: На Windows машине перед запуском компоуза запустите Docker :warning:
 
-3. Соберите миграции и подготовьте статику из контейнера web (infra_web_1)
+4. Соберите миграции и подготовьте статику из контейнера web (infra_web_1)
 
 ```
 docker-compose exec web python manage.py migrate
 docker-compose exec web python manage.py collectstatic --no-input
 ```
 
-4. При желании сгрузите дамп в базу данных
+5. При желании сгрузите дамп в базу данных
 
 ```
 docker-compose exec web python manage.py shell
@@ -71,4 +71,4 @@ docker cp fixtures.json infra_web_1:/app
 docker-compose exec web python manage.py loaddata fixtures.json
 ```
 
-5. Документация эндпоинтов доступна по адресу [__localhost/api/docs__](http://localhost/api/docs/)
+6. Документация эндпоинтов доступна по адресу [__localhost/api/docs__](http://localhost/api/docs/)
