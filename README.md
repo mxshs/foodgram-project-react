@@ -40,6 +40,7 @@ docker-compose up -d
 ```
 
 :warning: Если у вас не установлен Docker - посетите https://docs.docker.com/engine/install/ :warning:
+
 :warning: На Windows машине перед запуском компоуза запустите Docker :warning:
 
 3. Соберите миграции и подготовьте статику из контейнера web (infra_web_1)
