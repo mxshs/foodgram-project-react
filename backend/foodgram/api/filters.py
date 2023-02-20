@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django_filters import rest_framework as filters
 from recipes.models import Recipe
+from rest_framework import filters as drffilters
 
 User = get_user_model()
 
@@ -44,3 +45,7 @@ class RecipeFilter(filters.FilterSet):
         if value:
             return queryset.filter(in_shopping_cart=self.request.user)
         return queryset.filter(~Q(in_shopping_cart=self.request.user))
+
+
+class IngredientFilter(drffilters.SearchFilter):
+    search_param = "name"

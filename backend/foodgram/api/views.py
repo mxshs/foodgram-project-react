@@ -11,7 +11,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from utilities.models import RecipeIngredient, Subscription
 
-from .filters import RecipeFilter
+from .filters import RecipeFilter, IngredientFilter
 from .permissions import IsAuthorOrSafe
 from .serializers import (IngredientSerializer, RecipeSerializer,
                           RecipeShortSerializer, SubscriptionUserSerializer,
@@ -105,7 +105,7 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (AllowAny, )
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    filter_backends = (filters.SearchFilter, )
+    filter_backends = (IngredientFilter, )
     search_fields = ("name", )
     pagination_class = None
 
