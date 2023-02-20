@@ -4,12 +4,11 @@ from django.db.models import Sum
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
+from recipes.models import Ingredient, Recipe, Tag
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-
-from recipes.models import Ingredient, Recipe, Tag
 from utilities.models import RecipeIngredient, Subscription
 
 from .filters import IngredientFilter, RecipeFilter
@@ -79,7 +78,7 @@ class UserViewSet(UserViewSet):
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-        elif request.method == "DELETE":
+        else:
 
             try:
 
@@ -188,7 +187,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_201_CREATED
             )
 
-        elif request.method == "DELETE":
+        else:
 
             if not cart_check:
 

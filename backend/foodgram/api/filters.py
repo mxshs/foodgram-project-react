@@ -1,9 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django_filters import rest_framework as filters
-from rest_framework import filters as drffilters
-
 from recipes.models import Recipe
+from rest_framework import filters as drffilters
 
 User = get_user_model()
 
