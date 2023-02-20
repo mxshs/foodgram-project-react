@@ -4,14 +4,15 @@ from django.db.models import Sum
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
-from recipes.models import Ingredient, Recipe, Tag
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+
+from recipes.models import Ingredient, Recipe, Tag
 from utilities.models import RecipeIngredient, Subscription
 
-from .filters import RecipeFilter, IngredientFilter
+from .filters import IngredientFilter, RecipeFilter
 from .permissions import IsAuthorOrSafe
 from .serializers import (IngredientSerializer, RecipeSerializer,
                           RecipeShortSerializer, SubscriptionUserSerializer,
@@ -31,7 +32,7 @@ class UserViewSet(UserViewSet):
         methods=["get", ],
         serializer_class=SubscriptionUserSerializer,
         permission_classes=(IsAuthenticated, ),
-        )
+    )
     def subscriptions(self, request):
 
         user = request.user
@@ -47,7 +48,7 @@ class UserViewSet(UserViewSet):
         methods=["post", "delete", ],
         serializer_class=SubscriptionUserSerializer,
         permission_classes=(IsAuthenticated, ),
-        )
+    )
     def subscribe(self, request, id):
 
         to_sub = get_object_or_404(User, id=id)
@@ -66,7 +67,7 @@ class UserViewSet(UserViewSet):
                 return Response(
                     serializer.data,
                     status=status.HTTP_201_CREATED
-                    )
+                )
 
             except IntegrityError:
                 return Response(
@@ -76,7 +77,7 @@ class UserViewSet(UserViewSet):
                          }
                      },
                     status=status.HTTP_400_BAD_REQUEST
-                    )
+                )
 
         elif request.method == "DELETE":
 
@@ -85,11 +86,11 @@ class UserViewSet(UserViewSet):
                 Subscription.objects.get(
                     user=to_sub,
                     subscriber=request.user
-                    ).delete()
+                ).delete()
 
                 return Response(
                     status=status.HTTP_204_NO_CONTENT
-                    )
+                )
 
             except Subscription.DoesNotExist as e:
                 return Response(
@@ -97,7 +98,7 @@ class UserViewSet(UserViewSet):
                         {"user": f"{e.args[0]}"}
                      },
                     status=status.HTTP_400_BAD_REQUEST
-                    )
+                )
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
@@ -131,20 +132,20 @@ class RecipeViewSet(viewsets.ModelViewSet):
         detail=False,
         methods=["get", ],
         permission_classes=(IsAuthenticated, ),
-        )
+    )
     def download_shopping_cart(self, request):
 
         data = RecipeIngredient.objects.filter(
             recipe__in=Recipe.objects.filter(
                 in_shopping_cart=request.user
-                )
             )
+        )
 
         if data.exists():
             data = data.values(
                 "ingredient__name",
                 "ingredient__measurement_unit"
-                ).annotate(total=Sum("amount"))
+            ).annotate(total=Sum("amount"))
 
             fields = data[0].keys()
             response = convert_to_csv(data, fields)
@@ -157,13 +158,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
         detail=True,
         methods=["post", "delete", ],
         permission_classes=(IsAuthenticated, ),
-        )
+    )
     def shopping_cart(self, request, pk):
 
         recipe = get_object_or_404(Recipe, pk=pk)
         cart_check = recipe.in_shopping_cart.filter(
-                    id=request.user.id
-                    ).exists()
+            id=request.user.id
+        ).exists()
 
         if request.method == "POST":
 
@@ -176,7 +177,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                          }
                      },
                     status=status.HTTP_400_BAD_REQUEST
-                    )
+                )
 
             recipe.in_shopping_cart.add(request.user)
             recipe.save()
@@ -185,7 +186,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return Response(
                 serializer.data,
                 status=status.HTTP_201_CREATED
-                )
+            )
 
         elif request.method == "DELETE":
 
@@ -198,26 +199,26 @@ class RecipeViewSet(viewsets.ModelViewSet):
                          }
                      },
                     status=status.HTTP_400_BAD_REQUEST
-                    )
+                )
 
             recipe.in_shopping_cart.remove(request.user)
             recipe.save()
 
             return Response(
                 status=status.HTTP_204_NO_CONTENT
-                )
+            )
 
     @action(
         detail=True,
         methods=["post", "delete", ],
         permission_classes=(IsAuthenticated, ),
-        )
+    )
     def favorite(self, request, pk):
 
         recipe = get_object_or_404(Recipe, pk=pk)
         favorites_check = recipe.is_favorited.filter(
-                    id=request.user.id
-                    ).exists()
+            id=request.user.id
+        ).exists()
 
         if request.method == "POST":
 
@@ -230,7 +231,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                          }
                      },
                     status=status.HTTP_400_BAD_REQUEST
-                    )
+                )
 
             recipe.is_favorited.add(request.user)
             recipe.save()
@@ -239,7 +240,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return Response(
                 serializer.data,
                 status=status.HTTP_201_CREATED
-                )
+            )
 
         elif request.method == "DELETE":
 
@@ -252,11 +253,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
                          }
                      },
                     status=status.HTTP_400_BAD_REQUEST
-                    )
+                )
 
             recipe.is_favorited.remove(request.user)
             recipe.save()
 
             return Response(
                 status=status.HTTP_204_NO_CONTENT
-                )
+            )

@@ -47,7 +47,7 @@ class Recipe(models.Model):
     image = models.ImageField(
         upload_to="recipes/images/",
         null=False,
-        )
+    )
 
     text = models.TextField(null=False, )
 
@@ -55,13 +55,13 @@ class Recipe(models.Model):
         Ingredient,
         related_name="recipes",
         through="utilities.RecipeIngredient",
-        )
+    )
 
     tags = models.ManyToManyField(
         Tag,
         related_name="tagged",
         through="utilities.RecipeTag",
-        )
+    )
 
     cooking_time = models.IntegerField(null=False, )
 
@@ -69,10 +69,10 @@ class Recipe(models.Model):
         User,
         related_name="favorited",
         blank=True,
-        )
+    )
 
     in_shopping_cart = models.ManyToManyField(
         User,
         related_name="in_cart",
         blank=True,
-        )
+    )

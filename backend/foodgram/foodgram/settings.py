@@ -84,11 +84,11 @@ DJOSER = {
     'PERMISSIONS': {
         'user': ['rest_framework.permissions.AllowAny', ],
         'user_list': ['rest_framework.permissions.AllowAny', ],
-        },
+    },
     'SERIALIZERS': {
         'current_user': 'api.serializers.UserSerializer',
         'token_create': 'api.serializers.TokenCreateSerializer'
-        }
+    }
 }
 
 ROOT_URLCONF = 'foodgram.urls'

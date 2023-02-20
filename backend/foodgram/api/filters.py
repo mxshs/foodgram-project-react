@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django_filters import rest_framework as filters
-from recipes.models import Recipe
 from rest_framework import filters as drffilters
+
+from recipes.models import Recipe
 
 User = get_user_model()
 
@@ -12,17 +13,17 @@ class RecipeFilter(filters.FilterSet):
     is_in_shopping_cart = filters.BooleanFilter(
         field_name="in_shopping_cart",
         method="filter_cart",
-        )
+    )
 
     is_favorited = filters.BooleanFilter(
         field_name="is_favorited",
         method="filter_favorites",
-        )
+    )
 
     tags = filters.CharFilter(
         field_name="tags__slug",
         method="filter_tags",
-        )
+    )
 
     class Meta:
         model = Recipe
@@ -31,7 +32,7 @@ class RecipeFilter(filters.FilterSet):
             "author",
             "is_favorited",
             "is_in_shopping_cart",
-            )
+        )
 
     def filter_tags(self, queryset, name, tags):
         return queryset.filter(tags__slug__contains=tags)

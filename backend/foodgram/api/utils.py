@@ -1,5 +1,5 @@
-import csv
 import codecs
+import csv
 
 from django.http import HttpResponse
 
