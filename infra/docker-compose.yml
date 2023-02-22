@@ -9,8 +9,7 @@ services:
       - ./.env
 
   web:
-    build:
-      context: ../backend
+    image: mxshs/foodgram:latest
     restart: always
     volumes:
       - static_stuff:/app/backend_static/
