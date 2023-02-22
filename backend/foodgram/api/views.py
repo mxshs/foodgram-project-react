@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from utilities.models import RecipeIngredient, Subscription
 
 from .filters import IngredientFilter, RecipeFilter
-from .permissions import IsAuthorOrSafe
+from .permissions import IsAuthorOrSafe, UserPermission
 from .serializers import (IngredientSerializer, RecipeSerializer,
                           RecipeShortSerializer, SubscriptionUserSerializer,
                           TagSerializer, UserSerializer)
@@ -25,6 +25,7 @@ class UserViewSet(UserViewSet):
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (UserPermission, )
 
     @action(
         detail=False,
