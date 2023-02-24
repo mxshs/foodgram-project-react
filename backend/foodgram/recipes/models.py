@@ -76,3 +76,5 @@ class Recipe(models.Model):
         related_name="in_cart",
         blank=True,
     )
+
+    created_at = models.DateTimeField(auto_now_add=True)

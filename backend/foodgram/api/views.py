@@ -127,6 +127,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter, DjangoFilterBackend,
                        filters.OrderingFilter)
     filterset_class = RecipeFilter
+    ordering = ("created_at", )
 
     @action(
         detail=False,

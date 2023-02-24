@@ -18,6 +18,8 @@ class RecipeAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "author",
+        "ingredients_set",
+        "tags_set",
     )
 
     inlines = [RecipeIngredients, RecipeTags, ]
@@ -28,8 +30,16 @@ class RecipeAdmin(admin.ModelAdmin):
         "tags",
     )
 
+    search_fields = ("name", )
+
     def favorited_count(self, obj):
         return f"{obj.is_favorited.count()} users"
+
+    def ingredients_set(self, obj):
+        return [ingredient for ingredient in obj.ingredients.all()]
+
+    def tags_set(self, obj):
+        return [tag for tag in obj.tags.all()]
 
     favorited_count.short_description = "Favorited by"
 
@@ -44,6 +54,8 @@ class IngredientAdmin(admin.ModelAdmin):
 
     list_filter = ("name", )
 
+    search_fields = ("name", )
+
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
@@ -55,3 +67,5 @@ class TagAdmin(admin.ModelAdmin):
     )
 
     list_filter = ("name", )
+
+    search_fields = ("name", )
