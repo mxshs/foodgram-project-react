@@ -35,11 +35,12 @@ services:
       - static_stuff:/var/html/backend_static/
       - media_stuff:/var/html/backend_media/
       - spec_stuff:/usr/share/nginx/html/api/
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/templates:/etc/nginx/templates/
       - ../frontend/build:/usr/share/nginx/html/
       - ../docs/:/usr/share/nginx/html/api/docs/
     environment:
-      - WHITELIST_IP=${WHITELIST_IP}
+      NGINX_ENVSUBST_TEMPLATE_SUFFIX: ".conf"
+      WHITELIST_IP: ${WHITELIST_IP}
     depends_on:
       - web
 
