@@ -70,5 +70,3 @@ quit()
 docker cp fixtures.json infra_web_1:/app
 docker-compose exec web python manage.py loaddata fixtures.json
 ```
-
-6. Документация эндпоинтов доступна по адресу [__localhost/api/docs__](http://localhost/api/docs/)
