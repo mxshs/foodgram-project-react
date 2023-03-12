@@ -20,12 +20,7 @@
 git clone https://github.com/mxshs/foodgram-project-react.git
 ```
 
-2. Создайте postgres базу данных и заполните .env файл в папке infra
-
-```
-psql -U <ваш_пользователь>
-CREATE DATABASE <название>
-```
+2. Заполните .env файл в папке infra
 
 ```
 cd foogram-project-react/infra
@@ -43,14 +38,22 @@ docker-compose up -d
 
 :warning: На Windows машине перед запуском компоуза запустите Docker :warning:
 
-4. Соберите миграции и подготовьте статику из контейнера web (infra_web_1)
+4. Создайте базу в контейнере db
+
+```
+docker-compose exec db bash
+psql -U <DB_USER>
+CREATE DATABASE <DB_NAME>
+```
+
+5. Выполните миграции и соберите статику из контейнера web (infra_web_1)
 
 ```
 docker-compose exec web python manage.py migrate
 docker-compose exec web python manage.py collectstatic --no-input
 ```
 
-5. При желании сгрузите дамп в базу данных
+6. При желании сгрузите дамп в базу данных
 
 ```
 docker-compose exec web python manage.py shell
